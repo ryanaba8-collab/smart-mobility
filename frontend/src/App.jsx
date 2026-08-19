@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 
+import SearchForm from "./components/SearchForm";
+import TripList from "./components/TripList";
+import TripDetail from "./components/TripDetail";
+
 function App() {
   const [stations, setStations] = useState([]);
 
@@ -12,6 +16,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState(null);
+
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [detailLoading, setDetailLoading] = useState(false);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/stations")
@@ -34,13 +41,16 @@ function App() {
     event.preventDefault();
 
     if (!departure || !arrival) {
-      setError("Sélectionne une gare de départ et une gare d'arrivée.");
+      setError(
+        "Sélectionne une gare de départ et une gare d'arrivée."
+      );
       return;
     }
 
     setLoading(true);
     setError(null);
     setSearched(true);
+    setSelectedTrip(null);
 
     const params = new URLSearchParams({
       departure,
@@ -69,118 +79,64 @@ function App() {
     }
   }
 
+  async function handleTripDetail(tripId) {
+    setDetailLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/trips/${tripId}`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Impossible de récupérer le détail du trajet."
+        );
+      }
+
+      const data = await response.json();
+
+      setSelectedTrip(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setDetailLoading(false);
+    }
+  }
+
   return (
     <main>
       <h1>Smart Mobility</h1>
 
       <h2>Trouvez votre trajet</h2>
 
-      <form onSubmit={handleSearch}>
-        <div>
-          <label>Départ</label>
-
-          <select
-            value={departure}
-            onChange={(event) => setDeparture(event.target.value)}
-          >
-            <option value="">Choisir une gare</option>
-
-            {stations.map((station) => (
-              <option key={station.id} value={station.name}>
-                {station.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label>Arrivée</label>
-
-          <select
-            value={arrival}
-            onChange={(event) => setArrival(event.target.value)}
-          >
-            <option value="">Choisir une gare</option>
-
-            {stations.map((station) => (
-              <option key={station.id} value={station.name}>
-                {station.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label>Date</label>
-
-          <input
-            type="date"
-            value={travelDate}
-            onChange={(event) => setTravelDate(event.target.value)}
-          />
-        </div>
-
-        <div>
-          <label>Après</label>
-
-          <input
-            type="time"
-            value={departureAfter}
-            onChange={(event) => setDepartureAfter(event.target.value)}
-          />
-        </div>
-
-        <button type="submit">
-          Rechercher
-        </button>
-      </form>
-
-      {loading && <p>Recherche en cours...</p>}
+      <SearchForm
+        stations={stations}
+        departure={departure}
+        setDeparture={setDeparture}
+        arrival={arrival}
+        setArrival={setArrival}
+        travelDate={travelDate}
+        setTravelDate={setTravelDate}
+        departureAfter={departureAfter}
+        setDepartureAfter={setDepartureAfter}
+        onSearch={handleSearch}
+      />
 
       {error && <p>{error}</p>}
 
-      {!loading && searched && !error && (
-        <section>
-          <h2>
-            {trips.length} trajet{trips.length > 1 ? "s" : ""} trouvé
-            {trips.length > 1 ? "s" : ""}
-          </h2>
+      <TripList
+        trips={trips}
+        searched={searched}
+        loading={loading}
+        onTripDetail={handleTripDetail}
+      />
 
-          {trips.length === 0 && (
-            <p>Aucun trajet disponible.</p>
-          )}
-
-          {trips.map((trip) => (
-            <article key={trip.trip_id}>
-              <h3>{trip.train_number}</h3>
-
-              <p>
-                {new Date(trip.departure_datetime).toLocaleTimeString(
-                  "fr-FR",
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }
-                )}
-                {" → "}
-                {new Date(trip.arrival_datetime).toLocaleTimeString(
-                  "fr-FR",
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }
-                )}
-              </p>
-
-              <p>
-                {trip.departure} → {trip.arrival}
-              </p>
-
-              <strong>{trip.price.toFixed(2)} €</strong>
-            </article>
-          ))}
-        </section>
-      )}
+      <TripDetail
+        trip={selectedTrip}
+        loading={detailLoading}
+        onClose={() => setSelectedTrip(null)}
+      />
     </main>
   );
 }
