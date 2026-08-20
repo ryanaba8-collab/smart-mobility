@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models import Line, Station, Train, Trip
+from app.models import Line, Search, Station, Train, Trip
 
 
 router = APIRouter(
@@ -30,7 +30,18 @@ def search_trips(
 
     if not departure_station or not arrival_station:
         return []
+    search = Search(
+        departure_station_id=departure_station.id,
+        arrival_station_id=arrival_station.id,
+        travel_date=travel_date,
+        departure_after=departure_after,
+    )
 
+    db.add(search)
+    db.commit()
+
+
+     
     trips = (
         db.query(Trip, Train)
         .join(Train, Trip.train_id == Train.id)

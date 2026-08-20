@@ -1,9 +1,27 @@
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Numeric, String
 from sqlalchemy.dialects.postgresql import UUID
 
 from app.database import Base
-
-
+from sqlalchemy import (
+    Column,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Time,
+)
+from sqlalchemy import (
+    Column,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    Numeric,
+    String,
+    Time,
+    text,
+)
 class Station(Base):
     __tablename__ = "station"
 
@@ -74,3 +92,40 @@ class Trip(Base):
     arrival_datetime = Column(DateTime, nullable=False)
     price = Column(Numeric(8, 2), nullable=False)
     status = Column(String(30), nullable=False)
+
+class Search(Base):
+    __tablename__ = "search"
+
+    id = Column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        server_default=text("gen_random_uuid()"),
+    )
+
+    departure_station_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("station.id"),
+        nullable=False,
+    )
+
+    arrival_station_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("station.id"),
+        nullable=False,
+    )
+
+    travel_date = Column(
+        Date,
+        nullable=False,
+    )
+
+    departure_after = Column(
+        Time,
+        nullable=False,
+    )
+
+    search_datetime = Column(
+        DateTime,
+        nullable=False,
+        server_default=text("CURRENT_TIMESTAMP"),
+    )
