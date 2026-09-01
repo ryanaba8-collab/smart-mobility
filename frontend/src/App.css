@@ -1,184 +1,830 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+/* =========================================================
+   SMART MOBILITY - APP.CSS
+   ========================================================= */
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+
+/* =========================
+   PAGE PRINCIPALE
+   ========================= */
+
+main {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 80px;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: #111827;
 }
 
-#center {
+h2 {
+  margin-top: 8px;
+  margin-bottom: 28px;
+  color: #374151;
+}
+
+h3,
+h4 {
+  color: #111827;
+}
+
+
+/* =========================
+   FORMULAIRE DE RECHERCHE
+   ========================= */
+
+form {
+  display: grid;
+  grid-template-columns: 1.4fr auto 1.4fr 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+
+  padding: 20px;
+  margin-bottom: 28px;
+
+  background: white;
+  border-radius: 16px;
+
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+.swap-container {
   display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  align-items: flex-end;
+  justify-content: center;
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
+.swap-button {
+  width: 42px;
+  height: 46px;
 
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
   padding: 0;
+
   display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
+  align-items: center;
+  justify-content: center;
 
-  .logo {
-    height: 18px;
-  }
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
 
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
+  background: white;
+  color: #2563eb;
 
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
+  font-size: 1.3rem;
+  font-weight: 600;
 
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+  cursor: pointer;
 
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+.swap-button:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
 }
 
-.ticks {
+.swap-button:active {
+  transform: rotate(180deg);
+}
+form > div {
   position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+input {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 12px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: white;
+  color: #111827;
+}
+
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/* Bouton Rechercher */
+
+form > button {
+  height: 46px;
+
+  padding: 0 22px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #2563eb;
+  color: white;
+
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+form > button:hover {
+  background: #1d4ed8;
+}
+
+form > button:active {
+  transform: translateY(1px);
+}
+
+
+/* =========================
+   AUTOCOMPLÉTION
+   ========================= */
+
+form ul {
+  position: absolute;
+  z-index: 50;
+
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+
+  max-height: 260px;
+  overflow-y: auto;
+
+  margin: 0;
+  padding: 6px;
+
+  list-style: none;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+form li {
+  margin: 0;
+}
+
+form li button {
   width: 100%;
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+  padding: 10px 12px;
+
+  border: none;
+  border-radius: 8px;
+
+  text-align: left;
+
+  background: transparent;
+  color: #111827;
+
+  cursor: pointer;
+}
+
+form li button:hover {
+  background: #f3f4f6;
+}
+
+
+/* =========================
+   SECTIONS
+   ========================= */
+
+section {
+  margin-top: 28px;
+}
+
+
+/* =========================
+   RECHERCHES RÉCENTES
+   ========================= */
+
+section > ul {
+  padding: 0;
+  margin: 0;
+
+  list-style: none;
+}
+
+section > ul li {
+  margin-bottom: 8px;
+}
+
+section > ul li button {
+  width: 100%;
+
+  padding: 12px 14px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  background: white;
+  color: #111827;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+section > ul li button:hover {
+  border-color: #2563eb;
+  background: #f8fafc;
+}
+
+
+/* =========================
+   CARTES DES TRAJETS
+   ========================= */
+
+article {
+  padding: 20px;
+  margin-bottom: 14px;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+article:hover {
+  transform: translateY(-2px);
+
+  border-color: #d1d5db;
+
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+article h3 {
+  margin: 10px 0;
+
+  font-size: 1.5rem;
+}
+
+article p {
+  margin: 8px 0;
+}
+
+article button {
+  margin-top: 10px;
+
+  padding: 9px 14px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #111827;
+  color: white;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+article button:hover {
+  background: #374151;
+}
+
+
+/* =========================================================
+   MODALE - DÉTAIL DU TRAJET
+   ========================================================= */
+
+/*
+   IMPORTANT :
+   Cette classe est volontairement HORS des @media.
+   position: fixed permet à la modale de rester
+   au-dessus de la page et non tout en bas.
+*/
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(15, 23, 42, 0.55);
+
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+
+/* Fenêtre */
+
+.trip-modal {
+  width: min(680px, 100%);
+  max-height: 85vh;
+
+  overflow-y: auto;
+
+  margin: 0;
+  padding: 28px;
+
+  background: white;
+  color: #111827;
+
+  border-radius: 18px;
+
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+}
+
+
+/* =========================
+   EN-TÊTE MODALE
+   ========================= */
+
+.modal-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  margin: 0 0 4px;
+
+  color: #111827;
+}
+
+.modal-header p {
+  margin: 0;
+
+  color: #6b7280;
+}
+
+
+/* Bouton X */
+
+.modal-close {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #f3f4f6;
+  color: #111827;
+
+  font-size: 25px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #e5e7eb;
+}
+
+
+/* =========================
+   RÉSUMÉ DU TRAJET
+   ========================= */
+
+.trip-summary {
+  display: grid;
+
+  grid-template-columns: 1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 20px;
+
+  margin: 24px 0;
+  padding: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+  border-radius: 14px;
+}
+
+.trip-summary span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #6b7280;
+
+  font-size: 0.85rem;
+}
+
+.trip-summary strong {
+  display: block;
+
+  font-size: 1.6rem;
+
+  color: #111827;
+}
+
+.trip-summary p {
+  margin: 4px 0 0;
+
+  color: #4b5563;
+}
+
+.trip-summary-arrow {
+  color: #2563eb;
+
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+
+/* =========================
+   LISTE DES ARRÊTS
+   ========================= */
+
+.trip-modal h3 {
+  margin-top: 28px;
+  margin-bottom: 14px;
+}
+
+.trip-stops {
+  margin: 0;
+  padding-left: 28px;
+}
+
+.trip-stops li {
+  padding: 8px 0 14px 6px;
+
+  color: #111827;
+}
+
+.trip-stops li strong {
+  color: #111827;
+}
+
+.trip-stops li div {
+  margin-top: 4px;
+
+  color: #6b7280;
+
+  font-size: 0.9rem;
+}
+/* =========================
+   HISTORIQUE COMPACT
+   ========================= */
+
+.history-section {
+  margin: 22px 0 32px;
+}
+
+.history-section h3 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.history-list {
+  display: flex;
+  gap: 10px;
+
+  overflow-x: auto;
+
+  padding: 2px 2px 8px;
+  margin: 0;
+
+  list-style: none;
+}
+
+.history-list li {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.history-list li button {
+  width: auto;
+  min-width: 210px;
+
+  padding: 10px 14px;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+
+  background: white;
+  color: #111827;
+
+  text-align: left;
+}
+
+.history-list li button strong {
+  display: block;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  max-width: 240px;
+}
+
+.history-list li button div {
+  margin-top: 3px;
+
+  color: #6b7280;
+  font-size: 0.82rem;
+}
+
+.history-list li button:hover {
+  border-color: #2563eb;
+  background: #f8fafc;
+}
+/* =========================
+   RÉSULTATS
+   ========================= */
+
+.results-section {
+  margin-top: 32px;
+}
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 14px;
+}
+
+.results-header h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #111827;
+}
+
+.trip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.trip-card {
+  margin: 0;
+  padding: 20px 22px;
+
+  background: white;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+
+.trip-card:hover {
+  border-color: #cbd5e1;
+
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08);
+}
+
+.trip-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.train-number {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.trip-status {
+  padding: 4px 9px;
+
+  border-radius: 999px;
+
+  background: #ecfdf5;
+  color: #047857;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.trip-card-main {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1fr)
+    minmax(130px, 0.7fr)
+    minmax(180px, 1fr);
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+.trip-point strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 1.7rem;
+  color: #111827;
+}
+
+.trip-point span {
+  display: block;
+
+  color: #475569;
+  font-size: 0.92rem;
+}
+
+.trip-point-arrival {
+  text-align: right;
+}
+
+.trip-duration {
+  text-align: center;
+}
+
+.trip-duration > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+.trip-line {
+  position: relative;
+
+  height: 2px;
+
+  background: #cbd5e1;
+}
+
+.trip-line::before,
+.trip-line::after {
+  content: "";
+
+  position: absolute;
+  top: 50%;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #2563eb;
+
+  transform: translateY(-50%);
+}
+
+.trip-line::before {
+  left: 0;
+}
+
+.trip-line::after {
+  right: 0;
+}
+
+.trip-card-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 18px;
+}
+
+.trip-card-footer button {
+  margin: 0;
+
+  padding: 9px 14px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #111827;
+  color: white;
+
+  font-weight: 500;
+}
+
+.trip-card-footer button:hover {
+  background: #374151;
+}
+
+/* =========================
+   RESPONSIVE TABLETTE
+   ========================= */
+
+@media (max-width: 900px) {
+  form {
+    grid-template-columns: 1fr 1fr;
   }
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
+  form > button {
+    grid-column: 1 / -1;
   }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
+}
+
+
+/* =========================
+   RESPONSIVE MOBILE
+   ========================= */
+
+@media (max-width: 600px) {
+  main {
+    width: min(100% - 20px, 1100px);
+
+    padding-top: 24px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+
+    padding: 16px;
+  }
+
+  form > button {
+    grid-column: auto;
+  }
+
+
+  /* Modale mobile */
+
+  .modal-overlay {
+    align-items: flex-end;
+
+    padding: 10px;
+  }
+
+  .trip-modal {
+    width: 100%;
+    max-height: 92vh;
+
+    padding: 20px;
+
+    border-radius: 18px 18px 12px 12px;
+  }
+
+  .trip-summary {
+    gap: 10px;
+
+    padding: 14px;
+  }
+
+  .trip-summary strong {
+    font-size: 1.25rem;
+  }
+
+  .trip-summary p {
+    font-size: 0.85rem;
   }
 }

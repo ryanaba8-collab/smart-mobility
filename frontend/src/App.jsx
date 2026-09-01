@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-
+import "./App.css";
 import SearchForm from "./components/SearchForm";
 import TripList from "./components/TripList";
 import TripDetail from "./components/TripDetail";
 
 function App() {
-  const [stations, setStations] = useState([]);
-
   const [departure, setDeparture] = useState("");
   const [arrival, setArrival] = useState("");
-  const [travelDate, setTravelDate] = useState("2026-08-20");
+  const [travelDate, setTravelDate] = useState("2026-08-25");
   const [departureAfter, setDepartureAfter] = useState("18:00");
 
   const [trips, setTrips] = useState([]);
@@ -19,23 +17,9 @@ function App() {
 
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/stations")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Impossible de récupérer les gares.");
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        setStations(data);
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
-  }, []);
+  const [history, setHistory] = useState([]);
+  const [departureName, setDepartureName] = useState("");
+  const [arrivalName, setArrivalName] = useState("");
 
   async function handleSearch(event) {
     event.preventDefault();
@@ -65,12 +49,17 @@ function App() {
       );
 
       if (!response.ok) {
-        throw new Error("La recherche a échoué.");
-      }
+      const errorData = await response.json();
 
+      throw new Error(
+      errorData.detail || "La recherche a échoué."
+  );
+}
       const data = await response.json();
+      
 
       setTrips(data);
+      await loadHistory();
     } catch (error) {
       setError(error.message);
       setTrips([]);
@@ -95,7 +84,6 @@ function App() {
       }
 
       const data = await response.json();
-
       setSelectedTrip(data);
     } catch (error) {
       setError(error.message);
@@ -103,6 +91,55 @@ function App() {
       setDetailLoading(false);
     }
   }
+  async function loadHistory() {
+  try {
+    const response = await fetch(
+      "http://127.0.0.1:8000/searches/history?limit=5"
+    );
+
+    if (!response.ok) {
+      throw new Error("Impossible de récupérer l'historique.");
+    }
+
+    const data = await response.json();
+    setHistory(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+function handleHistoryClick(search) {
+  setDeparture(search.departure_external_id);
+  setArrival(search.arrival_external_id);
+
+  setDepartureName(search.departure);
+  setArrivalName(search.arrival);
+
+  setTravelDate(search.travel_date);
+  setDepartureAfter(search.departure_after.slice(0, 5));
+
+  setTrips([]);
+  setSearched(false);
+  setSelectedTrip(null);
+  setError(null);
+}
+function handleSwapStations() {
+  const oldDeparture = departure;
+  const oldDepartureName = departureName;
+
+  setDeparture(arrival);
+  setArrival(oldDeparture);
+
+  setDepartureName(arrivalName);
+  setArrivalName(oldDepartureName);
+
+  setTrips([]);
+  setSearched(false);
+  setSelectedTrip(null);
+  setError(null);
+}
+useEffect(() => {
+  loadHistory();
+}, []);
 
   return (
     <main>
@@ -111,17 +148,51 @@ function App() {
       <h2>Trouvez votre trajet</h2>
 
       <SearchForm
-        stations={stations}
         departure={departure}
         setDeparture={setDeparture}
         arrival={arrival}
         setArrival={setArrival}
+
+        departureName={departureName}
+        setDepartureName={setDepartureName}
+
+        arrivalName={arrivalName}
+        setArrivalName={setArrivalName}
+
         travelDate={travelDate}
         setTravelDate={setTravelDate}
+
         departureAfter={departureAfter}
         setDepartureAfter={setDepartureAfter}
+
         onSearch={handleSearch}
-      />
+        onSwapStations={handleSwapStations}
+     />
+      {history.length > 0 && (
+  <section className="history-section">
+  <h3>Recherches récentes</h3>
+
+  <ul className="history-list">
+      {history.map((search) => (
+    <li key={search.id}>
+    <button
+      type="button"
+      onClick={() => handleHistoryClick(search)}
+    >
+      <strong>
+        {search.departure} → {search.arrival}
+      </strong>
+
+          <div>
+            {search.travel_date} après{" "}
+            {search.departure_after.slice(0, 5)}
+          </div>
+        </button>
+      </li>
+     ))}
+    </ul>
+  </section>
+)}
 
       {error && <p>{error}</p>}
 
@@ -139,6 +210,7 @@ function App() {
       />
     </main>
   );
+  
 }
 
 export default App;

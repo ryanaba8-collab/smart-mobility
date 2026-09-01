@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app.database import engine
-from app.routers import stations, trips
+from app.routers import searches, stations, trips
 
 
 app = FastAPI(
@@ -22,6 +22,7 @@ app.add_middleware(
 
 app.include_router(stations.router)
 app.include_router(trips.router)
+app.include_router(searches.router)
 
 
 @app.get("/")

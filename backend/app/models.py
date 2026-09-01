@@ -26,12 +26,42 @@ class Station(Base):
     __tablename__ = "station"
 
     id = Column(UUID(as_uuid=True), primary_key=True)
-    name = Column(String(100), nullable=False)
-    city = Column(String(100), nullable=False)
-    latitude = Column(Numeric(9, 6))
-    longitude = Column(Numeric(9, 6))
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+
+    external_id = Column(
+        String(100),
+        unique=True,
+        nullable=True,
+    )
+
+    name = Column(
+        String(100),
+        nullable=False,
+    )
+
+    city = Column(
+        String(100),
+        nullable=True,
+    )
+
+    latitude = Column(
+        Numeric(9, 6),
+        nullable=True,
+    )
+
+    longitude = Column(
+        Numeric(9, 6),
+        nullable=True,
+    )
+
+    created_at = Column(
+        DateTime,
+        nullable=False,
+    )
+
+    updated_at = Column(
+        DateTime,
+        nullable=False,
+    )
 
 class TrainType(Base):
     __tablename__ = "train_type"

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import pandas as pd
+
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,6 +11,7 @@ CLEAN_FILE = CLEAN_DIR / "stations.csv"
 
 
 def transform_stations():
+    import pandas as pd
     print("Lecture des données RAW...")
 
     stops = pd.read_csv(RAW_FILE)

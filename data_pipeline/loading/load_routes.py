@@ -7,11 +7,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-STATIONS_FILE = BASE_DIR / "clean" / "stations.csv"
-
-
-
+ROUTES_FILE = BASE_DIR / "clean" / "routes.csv"
 
 DB_CONFIG = {
     "host": os.getenv("DB_HOST"),
@@ -21,13 +19,14 @@ DB_CONFIG = {
     "password": os.getenv("DB_PASSWORD"),
 }
 
-def load_stations():
+
+def load_routes():
     
-    print("Lecture des stations CLEAN...")
+    print("Lecture des routes CLEAN...")
 
-    stations = pd.read_csv(STATIONS_FILE)
+    routes = pd.read_csv(ROUTES_FILE)
 
-    print(f"Stations à charger : {len(stations)}")
+    print(f"Routes à charger : {len(routes)}")
 
     connection = psycopg2.connect(**DB_CONFIG)
     cursor = connection.cursor()
@@ -36,22 +35,28 @@ def load_stations():
     updated = 0
 
     try:
-        for _, station in stations.iterrows():
+        for _, route in routes.iterrows():
 
-            station_id = str(uuid.uuid4())
+            route_id = str(uuid.uuid4())
 
             cursor.execute(
                 """
-                INSERT INTO station (
+                INSERT INTO route (
                     id,
                     external_id,
-                    name,
-                    latitude,
-                    longitude,
+                    agency_id,
+                    short_name,
+                    long_name,
+                    route_type,
+                    color,
+                    text_color,
                     created_at,
                     updated_at
                 )
                 VALUES (
+                    %s,
+                    %s,
+                    %s,
                     %s,
                     %s,
                     %s,
@@ -63,19 +68,25 @@ def load_stations():
 
                 ON CONFLICT (external_id)
                 DO UPDATE SET
-                    name = EXCLUDED.name,
-                    latitude = EXCLUDED.latitude,
-                    longitude = EXCLUDED.longitude,
+                    agency_id = EXCLUDED.agency_id,
+                    short_name = EXCLUDED.short_name,
+                    long_name = EXCLUDED.long_name,
+                    route_type = EXCLUDED.route_type,
+                    color = EXCLUDED.color,
+                    text_color = EXCLUDED.text_color,
                     updated_at = CURRENT_TIMESTAMP
 
                 RETURNING (xmax = 0) AS inserted;
                 """,
                 (
-                    station_id,
-                    station["external_id"],
-                    station["name"],
-                    float(station["latitude"]),
-                    float(station["longitude"]),
+                    route_id,
+                    route["external_id"],
+                    str(route["agency_id"]),
+                    route["short_name"] if pd.notna(route["short_name"]) else None,
+                    route["long_name"] if pd.notna(route["long_name"]) else None,
+                    int(route["route_type"]),
+                    route["color"] if pd.notna(route["color"]) else None,
+                    route["text_color"] if pd.notna(route["text_color"]) else None,
                 ),
             )
 
@@ -102,4 +113,4 @@ def load_stations():
 
 
 if __name__ == "__main__":
-    load_stations()
+    load_routes()
