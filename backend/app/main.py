@@ -4,7 +4,7 @@ from sqlalchemy import text
 
 from app.database import engine
 from app.routers import searches, stations, trips
-
+from app.routers import predictions
 
 app = FastAPI(
     title="Smart Mobility API",
@@ -23,6 +23,7 @@ app.add_middleware(
 app.include_router(stations.router)
 app.include_router(trips.router)
 app.include_router(searches.router)
+app.include_router(predictions.router)
 
 
 @app.get("/")

@@ -1,0 +1,22 @@
+{
+    "model": "RandomForestRegressor",
+    "target": "retard_moyen_tous_trains_arrivee",
+    "cutoff_date": "2025-01-01",
+    "train_observations": 10185,
+    "test_observations": 2220,
+    "mae_minutes": 2.5221,
+    "rmse_minutes": 3.6117,
+    "r2": 0.3949,
+    "features": [
+        "annee",
+        "mois",
+        "duree_moyenne",
+        "nb_train_prevu",
+        "retard_mois_precedent",
+        "retard_moyen_3_mois",
+        "retard_moyen_6_mois",
+        "service",
+        "gare_depart",
+        "gare_arrivee"
+    ]
+}

@@ -44,3 +44,8 @@ __pycache__/
 # Generated data
 data_pipeline/raw/
 data_pipeline/clean/
+# Machine Learning models
+data_science/models/*.joblib
+# Data Science datasets
+data_science/data/raw/
+data_science/data/processed/
