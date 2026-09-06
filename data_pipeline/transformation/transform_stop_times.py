@@ -1,6 +1,7 @@
 from pathlib import Path
-import pandas as pd
+import gc
 
+import pandas as pd
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,9 +9,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STOP_TIMES_FILE = BASE_DIR / "raw" / "sncf_gtfs" / "stop_times.txt"
 OUTPUT_FILE = BASE_DIR / "clean" / "stop_times.csv"
 
+CHUNK_SIZE = 50_000
+
 
 def time_to_seconds(value):
-   
     if pd.isna(value):
         return None
 
@@ -23,13 +25,7 @@ def time_to_seconds(value):
     )
 
 
-def transform_stop_times():
-    print("Lecture des stop_times RAW...")
-
-    stop_times = pd.read_csv(STOP_TIMES_FILE)
-
-    print(f"Stop times RAW : {len(stop_times)}")
-
+def transform_chunk(stop_times):
     stop_times = stop_times[
         [
             "trip_id",
@@ -75,7 +71,8 @@ def transform_stop_times():
     )
 
     stop_times["stop_sequence"] = (
-        stop_times["stop_sequence"].astype(int)
+        stop_times["stop_sequence"]
+        .astype(int)
     )
 
     stop_times["pickup_type"] = (
@@ -90,22 +87,64 @@ def transform_stop_times():
         .astype(int)
     )
 
+    return stop_times
+
+
+def transform_stop_times():
+    print("Lecture des stop_times RAW par chunks...")
+
     OUTPUT_FILE.parent.mkdir(
         parents=True,
         exist_ok=True,
     )
 
-    stop_times.to_csv(
-        OUTPUT_FILE,
-        index=False,
+    if OUTPUT_FILE.exists():
+        OUTPUT_FILE.unlink()
+
+    total_raw = 0
+    total_transformed = 0
+    first_chunk = True
+
+    reader = pd.read_csv(
+        STOP_TIMES_FILE,
+        chunksize=CHUNK_SIZE,
     )
 
-    print(
-        f"Stop times transformés : {len(stop_times)}"
-    )
-    print(
-        f"Fichier créé : {OUTPUT_FILE}"
-    )
+    for chunk_number, chunk in enumerate(reader, start=1):
+        raw_count = len(chunk)
+        total_raw += raw_count
+
+        print(
+            f"Chunk {chunk_number} : "
+            f"{raw_count} lignes RAW"
+        )
+
+        transformed = transform_chunk(chunk)
+
+        transformed_count = len(transformed)
+        total_transformed += transformed_count
+
+        transformed.to_csv(
+            OUTPUT_FILE,
+            mode="w" if first_chunk else "a",
+            header=first_chunk,
+            index=False,
+        )
+
+        first_chunk = False
+
+        print(
+            f"Chunk {chunk_number} : "
+            f"{transformed_count} lignes transformées"
+        )
+
+        del transformed
+        del chunk
+        gc.collect()
+
+    print(f"Stop times RAW : {total_raw}")
+    print(f"Stop times transformés : {total_transformed}")
+    print(f"Fichier créé : {OUTPUT_FILE}")
 
 
 if __name__ == "__main__":

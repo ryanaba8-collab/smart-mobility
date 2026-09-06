@@ -49,3 +49,8 @@ data_science/models/*.joblib
 # Data Science datasets
 data_science/data/raw/
 data_science/data/processed/
+# Generated pipeline data
+data_pipeline/processed/
+
+# Generated monitoring metrics
+data_pipeline/monitoring/latest_metrics.json
