@@ -1,0 +1,28 @@
+BAGAGES
+
+Les voyageurs peuvent transporter leurs bagages à bord des trains.
+Les bagages restent sous la responsabilité du voyageur pendant le trajet.
+
+
+RETARD
+
+En cas de retard, le voyageur peut consulter les informations de circulation
+et les mises à jour disponibles pour son trajet.
+
+
+ANNULATION
+
+Lorsqu'un train est annulé, le voyageur doit consulter les solutions
+alternatives proposées pour poursuivre son voyage.
+
+
+ASSISTANCE
+
+Un voyageur ayant besoin d'assistance peut se renseigner avant son départ
+sur les dispositifs disponibles dans sa gare.
+
+
+BILLETS
+
+Le voyageur doit disposer d'un titre de transport valide correspondant
+au trajet effectué.

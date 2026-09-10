@@ -3,6 +3,7 @@ import "./App.css";
 import SearchForm from "./components/SearchForm";
 import TripList from "./components/TripList";
 import TripDetail from "./components/TripDetail";
+import AssistantChat from "./components/AssistantChat";
 
 function App() {
   const [departure, setDeparture] = useState("");
@@ -168,6 +169,7 @@ useEffect(() => {
         onSearch={handleSearch}
         onSwapStations={handleSwapStations}
      />
+     <AssistantChat />
       {history.length > 0 && (
   <section className="history-section">
   <h3>Recherches récentes</h3>
@@ -192,6 +194,7 @@ useEffect(() => {
      ))}
     </ul>
   </section>
+  
 )}
 
       {error && <p>{error}</p>}
