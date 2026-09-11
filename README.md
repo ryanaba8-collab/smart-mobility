@@ -28,7 +28,9 @@ permettant de couvrir plusieurs métiers Data / IA dans un même projet :
 
 L'objectif n'est pas de reproduire SNCF Connect, mais de construire une
 architecture réaliste autour de données ferroviaires.
+## Architecture
 
+![Architecture Smart Mobility](docs/architecture-smart-mobility.png)
 ------------------------------------------------------------------------
 
 ## 2. Fonctionnalités principales
